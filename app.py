@@ -113,8 +113,14 @@ def submit():
         flash("Sorry, something went wrong while sending your proposal. Please try again.", "error")
         return redirect(url_for("questions"))
 
-    return redirect(url_for("success"))
+    return redirect(url_for("final"))
 
+
+
+
+@app.route("/final")
+def final():
+    return render_template("final.html")
 
 @app.route("/success")
 def success():

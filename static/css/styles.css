@@ -162,3 +162,33 @@ input[type="range"] { height: 40px; }
   color: #555;
   line-height: 1.5;
 }
+
+.final-wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+.final-card {
+  width: 100%;
+  max-width: 760px;
+  background: rgba(255,255,255,.95);
+  border-radius: 16px;
+  padding: 1.2rem;
+  box-shadow: 0 12px 32px rgba(184, 76, 111, 0.18);
+  text-align: center;
+}
+.final-line {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .8s ease, transform .8s ease;
+  margin: .8rem 0;
+}
+.final-line.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.final-highlight { font-size: 1.2rem; font-weight: 700; color: #9f3c5c; }
+.final-note { color: var(--muted); font-size: .96rem; }
+.final-back { margin-top: .7rem; }
