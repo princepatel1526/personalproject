@@ -92,7 +92,7 @@ function initQuestionsFlow() {
         showEmojis('positive');
       }
 
-      document.getElementById('proposalForm').submit();
+      document.getElementById('proposalForm').requestSubmit();
     });
   });
 

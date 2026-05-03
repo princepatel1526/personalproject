@@ -18,7 +18,9 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-app.secret_key = os.getenv("FLASK_SECRET_KEY", "change-me-in-production")
+app.secret_key = os.getenv("FLASK_SECRET_KEY")
+if not app.secret_key:
+    raise RuntimeError("FLASK_SECRET_KEY environment variable is not set.")
 
 KNOW_YOU_OPTIONS = [
     "Your hidden fears",
@@ -92,7 +94,8 @@ def submit():
     answers.append(("How much do you like me?", f"{like_score}%"))
 
     final_response = request.form.get("final_response", "").strip()
-    if final_response not in FINAL_OPTIONS:
+    FINAL_OPTIONS_SAFE = ["Yes", "No", "I'll tell you"]
+    if not final_response or not any(final_response.startswith(opt) for opt in FINAL_OPTIONS_SAFE):
         flash("Please choose a final response.", "error")
         return redirect(url_for("questions"))
     answers.append(("Mansi Shukla… will you be mine?", final_response))
