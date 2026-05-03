@@ -75,6 +75,7 @@ def questions():
 def submit():
     print("Form submitted successfully")
     print("Final response:", request.form.get("final_response"))
+    print("FORM DATA:", request.form)
     recipient_email = os.getenv("RECIPIENT_EMAIL", "").strip()
     if not recipient_email:
         flash("Server configuration error: recipient email is not configured.", "error")
@@ -87,8 +88,7 @@ def submit():
 
     for item in QUESTION_BANK:
         answer = request.form.get(item["id"], "").strip()
-        valid_options = [option["text"] for option in item["options"]]
-        if answer not in valid_options:
+        if not answer:
             flash("Please complete all steps before submitting.", "error")
             return redirect(url_for("questions"))
         answers.append((item["text"], answer))
@@ -100,8 +100,7 @@ def submit():
     answers.append(("How much do you like me?", f"{like_score}%"))
 
     final_response = request.form.get("final_response", "").strip()
-    FINAL_OPTIONS_SAFE = ["Yes", "No", "I'll tell you"]
-    if not final_response or not any(final_response.startswith(opt) for opt in FINAL_OPTIONS_SAFE):
+    if not final_response:
         flash("Please choose a final response.", "error")
         return redirect(url_for("questions"))
     answers.append(("Mansi Shukla… will you be mine?", final_response))
