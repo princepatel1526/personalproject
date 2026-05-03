@@ -125,54 +125,54 @@ function initKnowYouFlip() {
   const cards = window.knowYouCards;
   if (!cards || !cards.length) return;
 
-  const wrap = document.getElementById('flipCard');
-  const inner = document.getElementById('flipInner');
-  const img = document.getElementById('cardImage');
-  const title = document.getElementById('cardTitle');
-  const desc = document.getElementById('cardDescription');
+  const container = document.getElementById('card-container');
   const progress = document.getElementById('knowProgress');
   const prevBtn = document.getElementById('prevCardBtn');
   const nextBtn = document.getElementById('nextCardBtn');
   const proceedBtn = document.getElementById('proceedBtn');
-  if (!wrap || !inner || !img || !title || !desc || !progress || !prevBtn || !nextBtn || !proceedBtn) return;
+  if (!container || !progress || !prevBtn || !nextBtn || !proceedBtn) return;
 
   let idx = 0;
 
-  const render = () => {
-    const card = cards[idx];
-    wrap.classList.remove('flipped');
-    wrap.classList.add('card-transition');
-    img.src = `/static/images/${card.image}`;
-    title.textContent = card.title;
-    desc.textContent = card.description;
-    
-    progress.textContent = `Card ${idx + 1} of ${cards.length}`;
-    prevBtn.disabled = idx === 0;
-    const last = idx === cards.length - 1;
+  function renderCard(index) {
+    const card = cards[index];
+    console.log(card.description);
+    container.innerHTML = `
+      <div class="flip-card" id="flipCard" role="button" tabindex="0" aria-label="Tap to flip card">
+        <div class="flip-inner">
+          <div class="flip-front">
+            <img src="/static/images/${card.image}" alt="Mansi" loading="lazy" class="know-image">
+            <h3>${card.title}</h3>
+          </div>
+          <div class="flip-back">
+            <p class="card-description">${card.description}</p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const flipCard = document.getElementById('flipCard');
+    const toggleFlip = () => flipCard.classList.toggle('flipped');
+    flipCard.addEventListener('click', toggleFlip, { passive: true });
+    flipCard.addEventListener('touchend', toggleFlip, { passive: true });
+    flipCard.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleFlip();
+      }
+    });
+
+    progress.textContent = `Card ${index + 1} of ${cards.length}`;
+    prevBtn.disabled = index === 0;
+    const last = index === cards.length - 1;
     nextBtn.classList.toggle('hidden', last);
     proceedBtn.classList.toggle('hidden', !last);
-    setTimeout(() => wrap.classList.remove('card-transition'), 220);
-  };
+  }
 
-  let lastFlip = 0;
-  const toggleFlip = () => {
-    const now = Date.now();
-    if (now - lastFlip < 250) return;
-    lastFlip = now;
-    wrap.classList.toggle('flipped');
-  };
-  wrap.addEventListener('click', toggleFlip, { passive: true });
-  wrap.addEventListener('touchend', toggleFlip, { passive: true });
-  wrap.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      toggleFlip();
-    }
-  });
-  nextBtn.addEventListener('click', () => { if (idx < cards.length - 1) { idx += 1; render(); } });
-  prevBtn.addEventListener('click', () => { if (idx > 0) { idx -= 1; render(); } });
+  nextBtn.addEventListener('click', () => { if (idx < cards.length - 1) { idx += 1; renderCard(idx); } });
+  prevBtn.addEventListener('click', () => { if (idx > 0) { idx -= 1; renderCard(idx); } });
 
-  render();
+  renderCard(idx);
 }
 
 initKnowYouFlip();
