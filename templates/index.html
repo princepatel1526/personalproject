@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For Mansi Shukla</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+</head>
+<body class="landing-page">
+  <div id="heartsLayer" class="hearts-layer" aria-hidden="true"></div>
+  <main class="landing-container">
+    <section class="romantic-card reveal">
+      <img src="{{ url_for('static', filename='images/hero.svg') }}" alt="Romantic hearts" class="hero-image" loading="lazy" />
+      <div class="card-content">
+        <h1>Dear Mansi Shukla</h1>
+        <p>Some feelings are too beautiful to stay unspoken. This little corner holds words from my heart.</p>
+        <p class="pre-note">Before we begin, I want you to see something…</p>
+        <a href="{{ url_for('know_you') }}" class="secondary-btn journey-btn">How well do I know you?</a>
+      </div>
+    </section>
+  </main>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
