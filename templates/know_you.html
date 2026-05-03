@@ -14,9 +14,16 @@
   <form class="form-card know-form" method="POST" action="{{ url_for('know_you') }}">
     <h2>How well do I know you?</h2>
     <p class="progress-text">A small pause before our journey continues.</p>
+
     <div class="know-grid">
       {% for statement in statements %}
-      <article class="know-card reveal">{{ statement }}</article>
+      <article class="know-card reveal">
+        <img src="{{ url_for('static', filename='images/' + statement.image) }}" alt="Mansi Shukla memory {{ loop.index }}" class="know-image" loading="lazy" />
+        <div class="know-copy">
+          <h3>{{ statement.title }}</h3>
+          <p>{{ statement.description }}</p>
+        </div>
+      </article>
       {% endfor %}
     </div>
 

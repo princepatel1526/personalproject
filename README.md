@@ -74,3 +74,12 @@ A responsive romantic proposal website dedicated to **Mansi Shukla**, built from
    - SMTP email with PDF attachment
 5. Redirect to final proposal page (`/success`)
 
+
+
+## Manual image placeholders for /know-you
+Add your own images to `static/images/` with these filenames before running the full visual flow:
+- `mansi1.jpg`
+- `mansi2.jpg`
+- `mansi3.jpg`
+- `mansi4.jpg`
+- `mansi5.jpg`
