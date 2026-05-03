@@ -78,12 +78,21 @@ function initQuestionsFlow() {
     input.addEventListener('change', () => showEmojis(input.dataset.tone));
   });
 
-  form.querySelectorAll('.final-btn').forEach((btn) => {
-    btn.addEventListener('click', () => {
-      finalResponseInput.value = btn.dataset.response;
-      if (btn.dataset.response.includes('Mumbai')) mumbaiMsg.classList.remove('hidden');
-      if (btn.dataset.response.includes('Yes')) showEmojis('positive');
-      form.submit();
+  document.querySelectorAll('.final-btn').forEach((btn) => {
+    btn.addEventListener('click', function () {
+      const value = this.getAttribute('data-response');
+      console.log('Submitting final response:', value);
+
+      document.getElementById('finalResponse').value = value;
+
+      if (value.includes('Mumbai')) {
+        document.getElementById('mumbaiMsg').classList.remove('hidden');
+      }
+      if (value.includes('Yes')) {
+        showEmojis('positive');
+      }
+
+      document.getElementById('proposalForm').submit();
     });
   });
 
