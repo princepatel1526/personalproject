@@ -11,84 +11,41 @@
 </head>
 <body>
 <main class="questions-wrapper">
-  <form class="form-card know-form" method="POST" action="{{ url_for('know_you') }}">
+  <section class="form-card know-form reveal">
     <h2>How well do I know you?</h2>
-    <p class="progress-text">A small pause before our journey continues.</p>
+    <p id="knowProgress" class="progress-text">Card 1 of 7</p>
 
-    <div class="know-grid">
-      <div class="know-card reveal">
-        <img src="{{ url_for('static', filename='images/mansi1.jpg') }}" alt="Mansi" loading="lazy" class="know-image">
-        <div class="card-content know-copy">
-          <h3>Your name… Mansi Shukla… is not just a name to me.</h3>
-          <p>It’s something that instantly grabs my attention, no matter what I’m doing.</p>
-        </div>
-      </div>
-
-      <div class="know-card reveal">
-        <img src="{{ url_for('static', filename='images/mansi2.png') }}" alt="Mansi" loading="lazy" class="know-image">
-        <div class="card-content know-copy">
-          <h3>Your roots are beautifully spread.</h3>
-          <p>Madhya Pradesh from your mother’s side, Uttar Pradesh from your father’s… a mix that makes you uniquely you.</p>
-        </div>
-      </div>
-
-      <div class="know-card reveal">
-        <img src="{{ url_for('static', filename='images/mansi3.png') }}" alt="Mansi" loading="lazy" class="know-image">
-        <div class="card-content know-copy">
-          <h3>We share more than just conversations.</h3>
-          <p>We even come from the same school… maybe that’s why it feels so familiar talking to you.</p>
-        </div>
-      </div>
-
-      <div class="know-card reveal">
-        <img src="{{ url_for('static', filename='images/mansi4.png') }}" alt="Mansi" loading="lazy" class="know-image">
-        <div class="card-content know-copy">
-          <h3>You don’t chase loudness.</h3>
-          <p>You like gray—simple, calm, and quietly beautiful… just like your personality at times.</p>
-        </div>
-      </div>
-
-      <div class="know-card reveal">
-        <img src="{{ url_for('static', filename='images/mansi5.jpg') }}" alt="Mansi" loading="lazy" class="know-image">
-        <div class="card-content know-copy">
-          <h3>You notice beauty in soft things.</h3>
-          <p>Like lilies… not flashy, but elegant and meaningful.</p>
-        </div>
-      </div>
-
-      <div class="know-card reveal">
-        <img src="{{ url_for('static', filename='images/mansi6.jpg') }}" alt="Mansi" loading="lazy" class="know-image">
-        <div class="card-content know-copy">
-          <h3>Your music taste says a lot about you.</h3>
-          <p>Arijit Singh… which means you understand emotions more deeply than you show.</p>
-        </div>
-      </div>
-
-      <div class="know-card reveal">
-        <img src="{{ url_for('static', filename='images/mansi7.png') }}" alt="Mansi" loading="lazy" class="know-image">
-        <div class="card-content know-copy">
-          <h3>And then there’s your comfort world…</h3>
-          <p>Music, books, and those long naps—you know how to slow down in a fast world.</p>
-        </div>
+    <div id="flipCard" class="flip-card" role="button" tabindex="0" aria-label="Tap to flip card">
+      <div class="flip-inner" id="flipInner">
+        <article class="flip-face flip-front">
+          <img id="cardImage" src="{{ url_for('static', filename='images/mansi1.jpg') }}" alt="Mansi" loading="lazy" class="know-image">
+          <div class="know-copy"><h3 id="cardTitle"></h3></div>
+        </article>
+        <article class="flip-face flip-back">
+          <div class="know-copy back-copy"><p id="cardDescription"></p></div>
+        </article>
       </div>
     </div>
 
-    <section class="know-choice-section">
-      <h3>What is something about you that I don’t know yet?</h3>
-      <div class="option-grid">
-        <label class="option-card checkbox-card" for="k1"><input id="k1" type="checkbox" name="know_you[]" value="Your hidden fears"><span>Your hidden fears</span></label>
-        <label class="option-card checkbox-card" for="k2"><input id="k2" type="checkbox" name="know_you[]" value="Things that make you overthink"><span>Things that make you overthink</span></label>
-        <label class="option-card checkbox-card" for="k3"><input id="k3" type="checkbox" name="know_you[]" value="Your favorite comfort things"><span>Your favorite comfort things</span></label>
-        <label class="option-card checkbox-card" for="k4"><input id="k4" type="checkbox" name="know_you[]" value="Something you’ve never told me"><span>Something you’ve never told me</span></label>
-        <label class="option-card checkbox-card" for="k5"><input id="k5" type="checkbox" name="know_you[]" value="What truly makes you happy"><span>What truly makes you happy</span></label>
-      </div>
-    </section>
-
-    <div class="btn-row single-row">
-      <button type="submit" class="primary-btn">Continue</button>
+    <div class="btn-row know-nav-row">
+      <button type="button" id="prevCardBtn" class="secondary-btn" disabled>Previous</button>
+      <button type="button" id="nextCardBtn" class="primary-btn">Next</button>
+      <a id="proceedBtn" href="{{ url_for('questions') }}" class="primary-btn hidden">Proceed to Questions</a>
     </div>
-  </form>
+  </section>
 </main>
+
+<script>
+  window.knowYouCards = [
+    { image: 'mansi1.jpg', title: 'Your name… Mansi Shukla… is not just a name to me.', description: 'It’s something that instantly grabs my attention, no matter what I’m doing.' },
+    { image: 'mansi2.jpg', title: 'Your roots are beautifully spread.', description: 'Madhya Pradesh from your mother’s side, Uttar Pradesh from your father’s… a mix that makes you uniquely you.' },
+    { image: 'mansi3.jpg', title: 'We share more than just conversations.', description: 'We even come from the same school… maybe that’s why it feels so familiar talking to you.' },
+    { image: 'mansi4.jpg', title: 'You don’t chase loudness.', description: 'You like gray—simple, calm, and quietly beautiful… just like your personality at times.' },
+    { image: 'mansi5.jpg', title: 'You notice beauty in soft things.', description: 'Like lilies… not flashy, but elegant and meaningful.' },
+    { image: 'mansi6.jpg', title: 'Your music taste says a lot about you.', description: 'Arijit Singh… which means you understand emotions more deeply than you show.' },
+    { image: 'mansi7.jpg', title: 'And then there’s your comfort world…', description: 'Music, books, and those long naps—you know how to slow down in a fast world.' }
+  ];
+</script>
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@ function initRevealCards() {
   const cards = document.querySelectorAll('.reveal');
   if (!cards.length) return;
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => entry.target.classList.toggle('show', entry.isIntersecting));
+    entries.forEach((entry) => entry.target.classList.toggle('active', entry.isIntersecting));
   }, { threshold: 0.15 });
   cards.forEach((el) => observer.observe(el));
 }
@@ -119,3 +119,51 @@ function initLandingFX() {
 initRevealCards();
 initQuestionsFlow();
 initLandingFX();
+
+
+function initKnowYouFlip() {
+  const cards = window.knowYouCards;
+  if (!cards || !cards.length) return;
+
+  const wrap = document.getElementById('flipCard');
+  const inner = document.getElementById('flipInner');
+  const img = document.getElementById('cardImage');
+  const title = document.getElementById('cardTitle');
+  const desc = document.getElementById('cardDescription');
+  const progress = document.getElementById('knowProgress');
+  const prevBtn = document.getElementById('prevCardBtn');
+  const nextBtn = document.getElementById('nextCardBtn');
+  const proceedBtn = document.getElementById('proceedBtn');
+  if (!wrap || !inner || !img || !title || !desc || !progress || !prevBtn || !nextBtn || !proceedBtn) return;
+
+  let idx = 0;
+
+  const render = () => {
+    const card = cards[idx];
+    inner.classList.remove('flipped');
+    wrap.classList.add('card-transition');
+    img.src = `/static/images/${card.image}`;
+    title.textContent = card.title;
+    desc.textContent = card.description;
+    progress.textContent = `Card ${idx + 1} of ${cards.length}`;
+    prevBtn.disabled = idx === 0;
+    const last = idx === cards.length - 1;
+    nextBtn.classList.toggle('hidden', last);
+    proceedBtn.classList.toggle('hidden', !last);
+    setTimeout(() => wrap.classList.remove('card-transition'), 220);
+  };
+
+  wrap.addEventListener('click', () => inner.classList.toggle('flipped'));
+  wrap.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      inner.classList.toggle('flipped');
+    }
+  });
+  nextBtn.addEventListener('click', () => { if (idx < cards.length - 1) { idx += 1; render(); } });
+  prevBtn.addEventListener('click', () => { if (idx > 0) { idx -= 1; render(); } });
+
+  render();
+}
+
+initKnowYouFlip();
