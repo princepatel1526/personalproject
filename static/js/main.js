@@ -130,11 +130,12 @@ function initKnowYouFlip() {
   const img = document.getElementById('cardImage');
   const title = document.getElementById('cardTitle');
   const desc = document.getElementById('cardDescription');
+  const backTitle = document.getElementById('cardBackTitle');
   const progress = document.getElementById('knowProgress');
   const prevBtn = document.getElementById('prevCardBtn');
   const nextBtn = document.getElementById('nextCardBtn');
   const proceedBtn = document.getElementById('proceedBtn');
-  if (!wrap || !inner || !img || !title || !desc || !progress || !prevBtn || !nextBtn || !proceedBtn) return;
+  if (!wrap || !inner || !img || !title || !desc || !backTitle || !progress || !prevBtn || !nextBtn || !proceedBtn) return;
 
   let idx = 0;
 
@@ -145,6 +146,7 @@ function initKnowYouFlip() {
     img.src = `/static/images/${card.image}`;
     title.textContent = card.title;
     desc.textContent = card.description;
+    backTitle.textContent = card.title;
     progress.textContent = `Card ${idx + 1} of ${cards.length}`;
     prevBtn.disabled = idx === 0;
     const last = idx === cards.length - 1;

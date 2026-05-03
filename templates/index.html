@@ -12,17 +12,13 @@
 <body class="landing-page">
   <div id="heartsLayer" class="hearts-layer" aria-hidden="true"></div>
   <main class="landing-container">
-    <section class="romantic-card floating">
+    <section class="romantic-card reveal">
       <img src="{{ url_for('static', filename='images/hero.svg') }}" alt="Romantic hearts" class="hero-image" loading="lazy" />
       <div class="card-content">
         <h1>Dear Mansi Shukla</h1>
         <p>Some feelings are too beautiful to stay unspoken. This little corner holds words from my heart.</p>
         <p class="pre-note">Before we begin, I want you to see something…</p>
         <a href="{{ url_for('know_you') }}" class="secondary-btn journey-btn">How well do I know you?</a>
-        <div class="entry-row">
-          <a href="{{ url_for('questions') }}" class="enter-btn">Enter</a>
-          <button id="toggleHearts" class="secondary-btn heart-toggle" type="button">Hearts: On</button>
-        </div>
       </div>
     </section>
   </main>

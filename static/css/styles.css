@@ -28,10 +28,21 @@ button:active,.enter-btn:active,.primary-btn:active,.secondary-btn:active{ trans
 
 .know-grid { display:grid; grid-template-columns:1fr; gap:.65rem; }
 .know-card { border:1px solid var(--stroke); border-radius:.85rem; background:#fff; overflow:hidden; display:flex; flex-direction:column; }
-.know-image { width:100%; aspect-ratio: 16 / 10; object-fit:cover; max-width:100%; }
+.know-image { width: 100%; height: auto; object-fit: contain; background: #f5f5f5; border-radius: 12px; padding: 8px; max-width:100%; max-height: 360px; }
 .know-copy { padding:.8rem .85rem 1rem; }
 .know-copy h3 { margin:.1rem 0 .35rem; font-size:1.08rem; }
 .know-copy p { margin:0; color:var(--muted); line-height:1.5; }
+
+.card-image-container {
+  background: linear-gradient(135deg, #fce3ec, #ffe8f0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+.card-content { position: relative; z-index: 2; color: #333; }
+.card-description { display:block; font-size:14px; line-height:1.5; color:#444; margin-top:.45rem; }
+
 
 .form-card { padding:1rem; position:relative; }
 .progress-text { margin:0 0 .45rem; color:var(--muted); font-size:.95rem; }
@@ -72,7 +83,7 @@ button:active,.enter-btn:active,.primary-btn:active,.secondary-btn:active{ trans
 .flip-card { perspective: 1000px; width:100%; min-height: 360px; cursor: pointer; border-radius: .9rem; }
 .flip-inner { position: relative; width: 100%; min-height: 360px; transition: transform 0.6s; transform-style: preserve-3d; }
 .flip-inner.flipped { transform: rotateY(180deg); }
-.flip-face { position: absolute; width: 100%; min-height: 360px; inset: 0; backface-visibility: hidden; border:1px solid var(--stroke); border-radius:.9rem; background:#fff; overflow:hidden; }
+.flip-face { position: absolute; width: 100%; min-height: 360px; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border:1px solid var(--stroke); border-radius:.9rem; background:#fff; overflow:hidden; }
 .flip-front { display:flex; flex-direction:column; }
 .flip-back { transform: rotateY(180deg); display:flex; align-items:center; justify-content:center; }
 .back-copy { padding:1.2rem; text-align:center; font-size:1.05rem; line-height:1.6; }
@@ -84,6 +95,7 @@ button:active,.enter-btn:active,.primary-btn:active,.secondary-btn:active{ trans
 @media (min-width:768px){
   .flip-card,.flip-inner,.flip-face { min-height: 320px; }
   .flip-front { flex-direction: row; }
-  .flip-front .know-image { width:42%; height:100%; aspect-ratio:auto; }
+  .flip-front .card-image-container { width:42%; }
+  .flip-front .know-image { width:100%; height:auto; max-height:300px; }
   .flip-front .know-copy { width:58%; display:flex; align-items:center; }
 }

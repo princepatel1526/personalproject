@@ -18,11 +18,18 @@
     <div id="flipCard" class="flip-card" role="button" tabindex="0" aria-label="Tap to flip card">
       <div class="flip-inner" id="flipInner">
         <article class="flip-face flip-front">
-          <img id="cardImage" src="{{ url_for('static', filename='images/mansi1.jpg') }}" alt="Mansi" loading="lazy" class="know-image">
-          <div class="know-copy"><h3 id="cardTitle"></h3></div>
+          <div class="card-image-container">
+            <img id="cardImage" src="{{ url_for('static', filename='images/mansi1.jpg') }}" alt="Mansi" loading="lazy" class="know-image">
+          </div>
+          <div class="card-content know-copy">
+            <h3 id="cardTitle"></h3>
+          </div>
         </article>
         <article class="flip-face flip-back">
-          <div class="know-copy back-copy"><p id="cardDescription"></p></div>
+          <div class="card-content know-copy back-copy">
+            <h3 id="cardBackTitle"></h3>
+            <p id="cardDescription" class="card-description"></p>
+          </div>
         </article>
       </div>
     </div>
