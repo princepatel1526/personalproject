@@ -21,11 +21,31 @@ app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "change-me-in-production")
 
 KNOW_YOU_STATEMENTS = [
-    "You pretend to be strong, but your heart always protects people you love.",
-    "You remember tiny details and call them nothing, but they mean everything.",
-    "Your smile changes when you're truly happy — softer, brighter, unforgettable.",
-    "Even in silence, you speak kindness with your eyes.",
-    "You carry storms quietly, yet still choose gentleness.",
+    {
+        "title": "The Quiet Protector",
+        "description": "You pretend to be strong, but your heart always protects people you love.",
+        "image": "mansi1.jpg",
+    },
+    {
+        "title": "Keeper of Little Details",
+        "description": "You remember tiny details and call them nothing, but they mean everything.",
+        "image": "mansi2.jpg",
+    },
+    {
+        "title": "That Real Smile",
+        "description": "Your smile changes when you're truly happy — softer, brighter, unforgettable.",
+        "image": "mansi3.jpg",
+    },
+    {
+        "title": "Kind Eyes, Loud Heart",
+        "description": "Even in silence, you speak kindness with your eyes.",
+        "image": "mansi4.jpg",
+    },
+    {
+        "title": "Gentle Through Storms",
+        "description": "You carry storms quietly, yet still choose gentleness.",
+        "image": "mansi5.jpg",
+    },
 ]
 
 KNOW_YOU_OPTIONS = [
