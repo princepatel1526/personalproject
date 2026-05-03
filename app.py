@@ -21,31 +21,21 @@ app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "change-me-in-production")
 
 QUESTION_BANK = [
-    {
-        "id": "q1",
-        "text": "How do you feel when we talk?",
-        "options": ["Happy and calm", "Excited and nervous", "Safe and understood", "Like time stops"],
-    },
-    {
-        "id": "q2",
-        "text": "Which moment with me feels most magical?",
-        "options": ["Late-night conversations", "Our laughter together", "Silent eye contact", "Simple walks together"],
-    },
-    {
-        "id": "q3",
-        "text": "What do you treasure most about us?",
-        "options": ["Our emotional comfort", "Our playful bond", "Our deep trust", "Our shared dreams"],
-    },
-    {
-        "id": "q4",
-        "text": "If love had a color for us, it would be...",
-        "options": ["Soft pink like tenderness", "Golden like warm sunsets", "Blue like peaceful skies", "Crimson like passion"],
-    },
-    {
-        "id": "q5",
-        "text": "What do you hope for our future?",
-        "options": ["A home full of laughter", "A life of adventure", "A forever friendship and love", "Growing old hand in hand"],
-    },
+    {"id": "q1", "text": "How do you feel when we talk?", "options": [
+        {"text": "Happy and calm", "tone": "positive"}, {"text": "Excited and nervous", "tone": "positive"},
+        {"text": "Safe and understood", "tone": "positive"}, {"text": "It depends on the day", "tone": "neutral"}]},
+    {"id": "q2", "text": "Which moment with me feels most magical?", "options": [
+        {"text": "Late-night conversations", "tone": "positive"}, {"text": "Our laughter together", "tone": "positive"},
+        {"text": "Simple walks together", "tone": "positive"}, {"text": "I am still figuring it out", "tone": "neutral"}]},
+    {"id": "q3", "text": "What do you treasure most about us?", "options": [
+        {"text": "Our emotional comfort", "tone": "positive"}, {"text": "Our deep trust", "tone": "positive"},
+        {"text": "Our shared dreams", "tone": "positive"}, {"text": "I need more time to know", "tone": "negative"}]},
+    {"id": "q4", "text": "If love had a color for us, it would be...", "options": [
+        {"text": "Soft pink like tenderness", "tone": "positive"}, {"text": "Golden like warm sunsets", "tone": "positive"},
+        {"text": "Blue like peaceful skies", "tone": "neutral"}, {"text": "I cannot pick one", "tone": "neutral"}]},
+    {"id": "q5", "text": "What do you hope for our future?", "options": [
+        {"text": "A forever friendship and love", "tone": "positive"}, {"text": "Growing old hand in hand", "tone": "positive"},
+        {"text": "A life of adventure", "tone": "neutral"}, {"text": "I am not sure yet", "tone": "negative"}]},
 ]
 
 
@@ -56,7 +46,7 @@ def landing():
 
 @app.route("/questions")
 def questions():
-    return render_template("questions.html", questions=QUESTION_BANK, total_questions=len(QUESTION_BANK))
+    return render_template("questions.html", questions=QUESTION_BANK)
 
 
 @app.route("/submit", methods=["POST"])
@@ -70,7 +60,8 @@ def submit():
     answers = []
     for item in QUESTION_BANK:
         answer = request.form.get(item["id"], "").strip()
-        if answer not in item["options"]:
+        valid_options = [option["text"] for option in item["options"]]
+        if answer not in valid_options:
             logger.warning("Validation failed for %s. Received invalid answer: %s", item["id"], answer)
             flash("Please select one option for each question.", "error")
             return redirect(url_for("questions"))
@@ -81,23 +72,13 @@ def submit():
     try:
         with tempfile.TemporaryDirectory() as tmp_dir:
             pdf_path = os.path.join(tmp_dir, f"mansi_proposal_{timestamp}.pdf")
-
-            generate_proposal_pdf(
-                pdf_path=pdf_path,
-                title="A Heartfelt Note for Mansi Shukla",
-                qa_pairs=answers,
-                closing_message="Every chosen answer feels like a heartbeat saying yes to love.",
-            )
-            logger.info("PDF generated successfully at %s", pdf_path)
-
+            generate_proposal_pdf(pdf_path=pdf_path, title="A Heartfelt Note for Mansi Shukla", qa_pairs=answers, closing_message="Every chosen answer feels like a heartbeat saying yes to love.")
             send_email_with_attachment(
                 recipient=recipient_email,
                 subject="A Romantic Proposal for Mansi Shukla 💌",
                 body="Hello,\n\nPlease find attached the romantic proposal responses in PDF format.\n\nWith love,\nYour Proposal Website",
                 attachment_path=pdf_path,
             )
-            logger.info("Proposal email sent successfully to %s", recipient_email)
-
     except Exception:
         logger.exception("Submission processing failed.")
         flash("Sorry, something went wrong while sending your proposal. Please try again.", "error")
