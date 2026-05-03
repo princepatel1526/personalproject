@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Will You Be Mine?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+</head>
+<body class="success-body">
+  <main class="success-container floating">
+    <p class="tagline">From my heart to yours</p>
+    <h1 id="typewriter"></h1>
+    <a href="{{ url_for('landing') }}" class="enter-btn">Read Again</a>
+  </main>
+
+  <button id="musicToggle" class="music-btn" type="button">Play Music ♫</button>
+
+  <script>
+    const text = 'Mansi Shukla, will you be mine?';
+    const target = document.getElementById('typewriter');
+    let idx = 0;
+
+    function typeWriter() {
+      if (idx < text.length) {
+        target.textContent += text.charAt(idx);
+        idx += 1;
+        setTimeout(typeWriter, 90);
+      }
+    }
+    typeWriter();
+
+    const musicBtn = document.getElementById('musicToggle');
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    let osc;
+    let gain;
+    let isPlaying = false;
+
+    function startTone() {
+      osc = audioCtx.createOscillator();
+      gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = 261.63;
+      gain.gain.value = 0.02;
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+    }
+
+    function stopTone() {
+      if (osc) {
+        osc.stop();
+        osc.disconnect();
+      }
+      if (gain) gain.disconnect();
+    }
+
+    musicBtn.addEventListener('click', async () => {
+      if (!isPlaying) {
+        await audioCtx.resume();
+        startTone();
+        isPlaying = true;
+        musicBtn.textContent = 'Pause Music ♫';
+      } else {
+        stopTone();
+        isPlaying = false;
+        musicBtn.textContent = 'Play Music ♫';
+      }
+    });
+  </script>
+</body>
+</html>
