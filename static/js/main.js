@@ -155,11 +155,19 @@ function initKnowYouFlip() {
     setTimeout(() => wrap.classList.remove('card-transition'), 220);
   };
 
-  wrap.addEventListener('click', () => inner.classList.toggle('flipped'));
+  let lastFlip = 0;
+  const toggleFlip = () => {
+    const now = Date.now();
+    if (now - lastFlip < 250) return;
+    lastFlip = now;
+    inner.classList.toggle('flipped');
+  };
+  wrap.addEventListener('click', toggleFlip, { passive: true });
+  wrap.addEventListener('touchend', toggleFlip, { passive: true });
   wrap.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      inner.classList.toggle('flipped');
+      toggleFlip();
     }
   });
   nextBtn.addEventListener('click', () => { if (idx < cards.length - 1) { idx += 1; render(); } });
