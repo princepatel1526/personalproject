@@ -81,25 +81,65 @@ button:active,.enter-btn:active,.primary-btn:active,.secondary-btn:active{ trans
 
 @media (min-width:768px){ .romantic-card{grid-template-columns:1fr 1fr;} .hero-image{height:100%;} .know-grid,.option-grid{grid-template-columns:1fr 1fr;} .know-card{flex-direction:row;} .know-image{width:38%; aspect-ratio:4/3;} .know-copy{width:62%;} .final-actions{grid-template-columns:1fr;} }
 
-.flip-card { perspective: 1000px; width:100%; min-height: 360px; cursor: pointer; border-radius: .9rem; }
-.flip-inner { position: relative; width: 100%; min-height: 360px; transition: transform 0.6s; transform-style: preserve-3d; }
-.flip-inner.flipped { transform: rotateY(180deg); }
-.flip-face { position: absolute; width: 100%; min-height: 360px; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border:1px solid var(--stroke); border-radius:.9rem; background:#fff; overflow:hidden; }
-.flip-front { display:flex; flex-direction:column; }
-.flip-back { transform: rotateY(180deg); display:flex; align-items:center; justify-content:center; }
-.back-copy { padding:1.2rem; text-align:center; font-size:1.05rem; line-height:1.6; }
-.know-nav-row { grid-template-columns: 1fr 1fr; align-items:center; }
-.know-nav-row .hidden { display:none; }
-.card-transition { animation: fadeSwap .22s ease; }
-@keyframes fadeSwap { from { opacity:.75; transform:translateY(6px);} to { opacity:1; transform:translateY(0);} }
+.flip-card {
+  perspective: 1000px;
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  min-height: 250px;
+  transition: transform 0.6s ease;
+  transform-style: preserve-3d;
+}
+
+.flip-card.flipped .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-front, .flip-back {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  background: white;
+}
+
+.flip-front {
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: .65rem;
+}
+
+.flip-back {
+  transform: rotateY(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  z-index: 1;
+}
+
+.card-description {
+  font-size: 16px;
+  color: #333;
+  line-height: 1.5;
+  display: block;
+}
 
 @media (min-width:768px){
-  .flip-card,.flip-inner,.flip-face { min-height: 320px; }
-  .flip-front { flex-direction: row; }
-  .flip-front .card-image-container { width:42%; }
-  .flip-front .know-image { width:100%; height:auto; max-height:300px; }
-  .flip-front .know-copy { width:58%; display:flex; align-items:center; }
+  .flip-front { gap: 1rem; }
 }
+
 
 input[type="range"] { height: 40px; }
 

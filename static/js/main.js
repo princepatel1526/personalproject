@@ -130,23 +130,22 @@ function initKnowYouFlip() {
   const img = document.getElementById('cardImage');
   const title = document.getElementById('cardTitle');
   const desc = document.getElementById('cardDescription');
-  const backTitle = document.getElementById('cardBackTitle');
   const progress = document.getElementById('knowProgress');
   const prevBtn = document.getElementById('prevCardBtn');
   const nextBtn = document.getElementById('nextCardBtn');
   const proceedBtn = document.getElementById('proceedBtn');
-  if (!wrap || !inner || !img || !title || !desc || !backTitle || !progress || !prevBtn || !nextBtn || !proceedBtn) return;
+  if (!wrap || !inner || !img || !title || !desc || !progress || !prevBtn || !nextBtn || !proceedBtn) return;
 
   let idx = 0;
 
   const render = () => {
     const card = cards[idx];
-    inner.classList.remove('flipped');
+    wrap.classList.remove('flipped');
     wrap.classList.add('card-transition');
     img.src = `/static/images/${card.image}`;
     title.textContent = card.title;
     desc.textContent = card.description;
-    backTitle.textContent = card.title;
+    
     progress.textContent = `Card ${idx + 1} of ${cards.length}`;
     prevBtn.disabled = idx === 0;
     const last = idx === cards.length - 1;
@@ -160,7 +159,7 @@ function initKnowYouFlip() {
     const now = Date.now();
     if (now - lastFlip < 250) return;
     lastFlip = now;
-    inner.classList.toggle('flipped');
+    wrap.classList.toggle('flipped');
   };
   wrap.addEventListener('click', toggleFlip, { passive: true });
   wrap.addEventListener('touchend', toggleFlip, { passive: true });
