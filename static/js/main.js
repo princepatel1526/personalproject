@@ -137,30 +137,20 @@ function initKnowYouFlip() {
   function renderCard(index) {
     const card = cards[index];
     console.log(card.description);
+
+    const container = document.getElementById("card-container");
+
     container.innerHTML = `
-      <div class="flip-card" id="flipCard" role="button" tabindex="0" aria-label="Tap to flip card">
-        <div class="flip-inner">
-          <div class="flip-front">
-            <img src="/static/images/${card.image}" alt="Mansi" loading="lazy" class="know-image">
-            <h3>${card.title}</h3>
-          </div>
-          <div class="flip-back">
-            <p class="card-description">${card.description}</p>
-          </div>
+      <div class="card">
+        <div class="card-image-container">
+          <img src="/static/images/${card.image}" alt="Mansi" loading="lazy">
+        </div>
+        <div class="card-content">
+          <h3>${card.title}</h3>
+          <p class="card-description">${card.description}</p>
         </div>
       </div>
     `;
-
-    const flipCard = document.getElementById('flipCard');
-    const toggleFlip = () => flipCard.classList.toggle('flipped');
-    flipCard.addEventListener('click', toggleFlip, { passive: true });
-    flipCard.addEventListener('touchend', toggleFlip, { passive: true });
-    flipCard.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleFlip();
-      }
-    });
 
     progress.textContent = `Card ${index + 1} of ${cards.length}`;
     prevBtn.disabled = index === 0;
