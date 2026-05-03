@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Love Story Questions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+</head>
+<body>
+  <main class="questions-wrapper">
+    <div class="progress-wrap">
+      <div id="progressBar" class="progress-bar"></div>
+    </div>
+
+    <form id="proposalForm" class="form-card" method="POST" action="{{ url_for('submit') }}" novalidate>
+      <h2>Before the final question...</h2>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-box">
+        {% for category, message in messages %}
+          <p class="flash {{ category }}">{{ message }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      {% for question in questions %}
+      <section class="form-step {% if loop.first %}active{% endif %}">
+        <label for="q{{ loop.index }}">{{ loop.index }}. {{ question }}</label>
+        <textarea id="q{{ loop.index }}" name="q{{ loop.index }}" rows="5" required minlength="3" placeholder="Write from your heart..."></textarea>
+        <small class="error">Please add a meaningful response.</small>
+      </section>
+      {% endfor %}
+
+      <div class="btn-row">
+        <button type="button" id="prevBtn" class="secondary-btn" disabled>Previous</button>
+        <button type="button" id="nextBtn" class="primary-btn">Next</button>
+        <button type="submit" id="submitBtn" class="primary-btn hidden">Submit</button>
+      </div>
+    </form>
+  </main>
+
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
