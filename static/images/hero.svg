@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ffd9e6"/>
+      <stop offset="100%" stop-color="#ffeef4"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#g)"/>
+  <g fill="#b84c6f" opacity="0.8">
+    <path d="M230 190c-22-36-82-27-91 17-8 42 28 72 91 123 63-51 99-81 91-123-9-44-69-53-91-17z"/>
+    <path d="M520 220c-18-30-67-23-75 14-7 35 23 60 75 102 52-42 82-67 75-102-8-37-57-44-75-14z"/>
+  </g>
+  <text x="400" y="420" text-anchor="middle" font-size="42" font-family="Georgia" fill="#8c3854">A Love Letter in Bloom</text>
+</svg>
