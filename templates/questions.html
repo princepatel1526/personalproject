@@ -15,25 +15,55 @@
       <h2>Before the final question...</h2>
       <p id="progressText" class="progress-text"></p>
       <div class="progress-wrap"><div id="progressBar" class="progress-bar"></div></div>
-      <img src="{{ url_for('static', filename='images/rose-glow.svg') }}" alt="romantic glow" class="form-accent" loading="lazy" />
-      {% for question in questions %}
-      <section class="form-step {% if loop.first %}active{% endif %}">
-        <h3>{{ loop.index }}. {{ question.text }}</h3>
+
+      <section class="form-step active">
+        <h3>1. What do you genuinely feel when you talk to me?</h3>
         <div class="option-grid">
-          {% for option in question.options %}
-          <label class="option-card" for="{{ question.id }}_{{ loop.index }}">
-            <input id="{{ question.id }}_{{ loop.index }}" type="radio" name="{{ question.id }}" value="{{ option.text }}" data-tone="{{ option.tone }}" required>
-            <span>{{ option.text }}</span>
-          </label>
-          {% endfor %}
+          <label class="option-card"><input type="radio" name="q1" value="I feel happy and relaxed" data-tone="positive" required><span>I feel happy and relaxed</span></label>
+          <label class="option-card"><input type="radio" name="q1" value="I feel curious and interested" data-tone="positive"><span>I feel curious and interested</span></label>
+          <label class="option-card"><input type="radio" name="q1" value="I enjoy it, but I don’t think much about it" data-tone="neutral"><span>I enjoy it, but I don’t think much about it</span></label>
+          <label class="option-card"><input type="radio" name="q1" value="It feels different… in a good way" data-tone="positive"><span>It feels different… in a good way</span></label>
         </div>
         <small class="error">Please choose one option to continue.</small>
       </section>
-      {% endfor %}
+
+      <section class="form-step">
+        <h3>2. Do you think we could actually work as something more?</h3>
+        <div class="option-grid">
+          <label class="option-card"><input type="radio" name="q2" value="Yes, I can see that" data-tone="positive" required><span>Yes, I can see that</span></label>
+          <label class="option-card"><input type="radio" name="q2" value="Maybe… I’m not sure yet" data-tone="neutral"><span>Maybe… I’m not sure yet</span></label>
+          <label class="option-card"><input type="radio" name="q2" value="I haven’t thought about it" data-tone="neutral"><span>I haven’t thought about it</span></label>
+          <label class="option-card"><input type="radio" name="q2" value="No, I don’t think so" data-tone="negative"><span>No, I don’t think so</span></label>
+        </div>
+        <small class="error">Please choose one option to continue.</small>
+      </section>
+
+      <section class="form-step">
+        <h3>3. How much do you like me?</h3>
+        <div class="slider-wrap">
+          <input id="likeScore" type="range" name="like_score" min="0" max="100" value="50" />
+          <p class="score-read"><span id="scoreValue">50%</span> <span id="scoreEmoji">🙂</span></p>
+        </div>
+      </section>
+
+      <section class="form-step proposal-step">
+        <p class="proposal-line">I don’t think this is just friendship anymore…</p>
+        <p class="proposal-line">Somewhere along the way, you became important to me.</p>
+        <p class="proposal-line">And I realized something…</p>
+        <p class="proposal-line strong">I love you.</p>
+        <h3 id="finalQuestion" class="typewriter">Mansi Shukla… will you be mine?</h3>
+        <input type="hidden" name="final_response" id="finalResponse" />
+        <div class="final-actions">
+          <button class="primary-btn final-btn" data-response="Yes ❤️" type="button">Yes ❤️</button>
+          <button class="secondary-btn final-btn" data-response="No 😅" type="button">No 😅</button>
+          <button class="secondary-btn final-btn" data-response="I’ll tell you when you come to Mumbai 😉" type="button">I’ll tell you when you come to Mumbai 😉</button>
+        </div>
+        <p id="mumbaiMsg" class="progress-text hidden">I guess I’ll have to wait then…</p>
+      </section>
+
       <div class="btn-row">
         <button type="button" id="prevBtn" class="secondary-btn" disabled>Previous</button>
         <button type="button" id="nextBtn" class="primary-btn">Next</button>
-        <button type="submit" id="submitBtn" class="primary-btn hidden">Submit</button>
       </div>
     </form>
   </main>

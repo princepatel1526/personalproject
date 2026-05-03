@@ -20,34 +20,6 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "change-me-in-production")
 
-KNOW_YOU_STATEMENTS = [
-    {
-        "title": "The Quiet Protector",
-        "description": "You pretend to be strong, but your heart always protects people you love.",
-        "image": "mansi1.jpg",
-    },
-    {
-        "title": "Keeper of Little Details",
-        "description": "You remember tiny details and call them nothing, but they mean everything.",
-        "image": "mansi2.jpg",
-    },
-    {
-        "title": "That Real Smile",
-        "description": "Your smile changes when you're truly happy — softer, brighter, unforgettable.",
-        "image": "mansi3.jpg",
-    },
-    {
-        "title": "Kind Eyes, Loud Heart",
-        "description": "Even in silence, you speak kindness with your eyes.",
-        "image": "mansi4.jpg",
-    },
-    {
-        "title": "Gentle Through Storms",
-        "description": "You carry storms quietly, yet still choose gentleness.",
-        "image": "mansi5.jpg",
-    },
-]
-
 KNOW_YOU_OPTIONS = [
     "Your hidden fears",
     "Things that make you overthink",
@@ -57,22 +29,20 @@ KNOW_YOU_OPTIONS = [
 ]
 
 QUESTION_BANK = [
-    {"id": "q1", "text": "How do you feel when we talk?", "options": [
-        {"text": "Happy and calm", "tone": "positive"}, {"text": "Excited and nervous", "tone": "positive"},
-        {"text": "Safe and understood", "tone": "positive"}, {"text": "It depends on the day", "tone": "neutral"}]},
-    {"id": "q2", "text": "Which moment with me feels most magical?", "options": [
-        {"text": "Late-night conversations", "tone": "positive"}, {"text": "Our laughter together", "tone": "positive"},
-        {"text": "Simple walks together", "tone": "positive"}, {"text": "I am still figuring it out", "tone": "neutral"}]},
-    {"id": "q3", "text": "What do you treasure most about us?", "options": [
-        {"text": "Our emotional comfort", "tone": "positive"}, {"text": "Our deep trust", "tone": "positive"},
-        {"text": "Our shared dreams", "tone": "positive"}, {"text": "I need more time to know", "tone": "negative"}]},
-    {"id": "q4", "text": "If love had a color for us, it would be...", "options": [
-        {"text": "Soft pink like tenderness", "tone": "positive"}, {"text": "Golden like warm sunsets", "tone": "positive"},
-        {"text": "Blue like peaceful skies", "tone": "neutral"}, {"text": "I cannot pick one", "tone": "neutral"}]},
-    {"id": "q5", "text": "What do you hope for our future?", "options": [
-        {"text": "A forever friendship and love", "tone": "positive"}, {"text": "Growing old hand in hand", "tone": "positive"},
-        {"text": "A life of adventure", "tone": "neutral"}, {"text": "I am not sure yet", "tone": "negative"}]},
+    {"id": "q1", "text": "What do you genuinely feel when you talk to me?", "options": [
+        {"text": "I feel happy and relaxed", "tone": "positive"},
+        {"text": "I feel curious and interested", "tone": "positive"},
+        {"text": "I enjoy it, but I don’t think much about it", "tone": "neutral"},
+        {"text": "It feels different… in a good way", "tone": "positive"},
+    ]},
+    {"id": "q2", "text": "Do you think we could actually work as something more?", "options": [
+        {"text": "Yes, I can see that", "tone": "positive"},
+        {"text": "Maybe… I’m not sure yet", "tone": "neutral"},
+        {"text": "I haven’t thought about it", "tone": "neutral"},
+        {"text": "No, I don’t think so", "tone": "negative"},
+    ]},
 ]
+FINAL_OPTIONS = ["Yes ❤️", "No 😅", "I’ll tell you when you come to Mumbai 😉"]
 
 
 @app.route("/")
@@ -87,8 +57,7 @@ def know_you():
         valid_selected = [item for item in selected if item in KNOW_YOU_OPTIONS]
         session["know_you_choices"] = valid_selected
         return redirect(url_for("questions"))
-
-    return render_template("know_you.html", statements=KNOW_YOU_STATEMENTS, options=KNOW_YOU_OPTIONS)
+    return render_template("know_you.html")
 
 
 @app.route("/questions")
@@ -100,7 +69,6 @@ def questions():
 def submit():
     recipient_email = os.getenv("RECIPIENT_EMAIL", "").strip()
     if not recipient_email:
-        logger.error("RECIPIENT_EMAIL is missing in environment configuration.")
         flash("Server configuration error: recipient email is not configured.", "error")
         return redirect(url_for("questions"))
 
@@ -113,13 +81,23 @@ def submit():
         answer = request.form.get(item["id"], "").strip()
         valid_options = [option["text"] for option in item["options"]]
         if answer not in valid_options:
-            logger.warning("Validation failed for %s. Received invalid answer: %s", item["id"], answer)
-            flash("Please select one option for each question.", "error")
+            flash("Please complete all steps before submitting.", "error")
             return redirect(url_for("questions"))
         answers.append((item["text"], answer))
 
-    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    like_score = request.form.get("like_score", "").strip()
+    if not like_score.isdigit() or not (0 <= int(like_score) <= 100):
+        flash("Please set the like score before submitting.", "error")
+        return redirect(url_for("questions"))
+    answers.append(("How much do you like me?", f"{like_score}%"))
 
+    final_response = request.form.get("final_response", "").strip()
+    if final_response not in FINAL_OPTIONS:
+        flash("Please choose a final response.", "error")
+        return redirect(url_for("questions"))
+    answers.append(("Mansi Shukla… will you be mine?", final_response))
+
+    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
     try:
         with tempfile.TemporaryDirectory() as tmp_dir:
             pdf_path = os.path.join(tmp_dir, f"mansi_proposal_{timestamp}.pdf")

@@ -83,3 +83,40 @@ Add your own images to `static/images/` with these filenames before running the 
 - `mansi3.jpg`
 - `mansi4.jpg`
 - `mansi5.jpg`
+
+## How to Make Images and Animations Work
+
+1. Folder structure:
+   ```
+   static/
+     images/
+   ```
+
+2. Add your images manually:
+   - `mansi1.jpg`
+   - `mansi2.jpg`
+   - `mansi3.jpg`
+   - `mansi4.jpg`
+   - `mansi5.jpg`
+   - `mansi6.jpg`
+   - `mansi7.jpg`
+
+3. Use this format in HTML:
+   ```html
+   <img src="{{ url_for('static', filename='images/mansi1.jpg') }}" loading="lazy">
+   ```
+
+4. Make sure:
+   - Images are inside `/static/images/`
+   - Filenames match exactly (case-sensitive)
+   - Images are optimized (small file size)
+
+5. If images do not show:
+   - Check path
+   - Restart Flask server
+   - Clear browser cache
+
+6. Animation note:
+   - Animations only apply if elements are visible
+   - Ensure CSS classes are applied correctly
+   - Check console for errors

@@ -59,3 +59,14 @@ h1,h2,h3 { font-family:'Playfair Display',serif; line-height:1.3; }
 .single-row { grid-template-columns: 1fr; }
 
 @media (hover: hover){ .know-card:hover .know-image{ transform: scale(1.04); transition: transform .35s ease; } }
+
+.slider-wrap { background:#fff7fa; border:1px solid var(--stroke); border-radius:.85rem; padding:1rem; }
+#likeScore { width:100%; accent-color:var(--primary); }
+.score-read { margin:.7rem 0 0; font-size:1.15rem; font-weight:600; display:flex; gap:.6rem; align-items:center; }
+.proposal-step { text-align:center; }
+.proposal-line { margin:.45rem 0; color:var(--muted); }
+.proposal-line.strong { color:var(--text); font-weight:700; }
+.typewriter { margin-top:1rem; }
+.final-actions { margin-top:1rem; display:grid; gap:.6rem; }
+.final-btn { width:100%; min-height:52px; }
+@media (min-width:768px){ .final-actions{grid-template-columns:1fr;} }
