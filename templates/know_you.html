@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How Well I Know You</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+</head>
+<body>
+<main class="questions-wrapper">
+  <form class="form-card know-form" method="POST" action="{{ url_for('know_you') }}">
+    <h2>How well do I know you?</h2>
+    <p class="progress-text">A small pause before our journey continues.</p>
+
+    <div class="know-grid">
+      <div class="know-card reveal">
+        <img src="{{ url_for('static', filename='images/mansi1.jpg') }}" alt="Mansi" loading="lazy" class="know-image">
+        <div class="card-content know-copy">
+          <h3>Your name… Mansi Shukla… is not just a name to me.</h3>
+          <p>It’s something that instantly grabs my attention, no matter what I’m doing.</p>
+        </div>
+      </div>
+
+      <div class="know-card reveal">
+        <img src="{{ url_for('static', filename='images/mansi2.jpg') }}" alt="Mansi" loading="lazy" class="know-image">
+        <div class="card-content know-copy">
+          <h3>Your roots are beautifully spread.</h3>
+          <p>Madhya Pradesh from your mother’s side, Uttar Pradesh from your father’s… a mix that makes you uniquely you.</p>
+        </div>
+      </div>
+
+      <div class="know-card reveal">
+        <img src="{{ url_for('static', filename='images/mansi3.jpg') }}" alt="Mansi" loading="lazy" class="know-image">
+        <div class="card-content know-copy">
+          <h3>We share more than just conversations.</h3>
+          <p>We even come from the same school… maybe that’s why it feels so familiar talking to you.</p>
+        </div>
+      </div>
+
+      <div class="know-card reveal">
+        <img src="{{ url_for('static', filename='images/mansi4.jpg') }}" alt="Mansi" loading="lazy" class="know-image">
+        <div class="card-content know-copy">
+          <h3>You don’t chase loudness.</h3>
+          <p>You like gray—simple, calm, and quietly beautiful… just like your personality at times.</p>
+        </div>
+      </div>
+
+      <div class="know-card reveal">
+        <img src="{{ url_for('static', filename='images/mansi5.jpg') }}" alt="Mansi" loading="lazy" class="know-image">
+        <div class="card-content know-copy">
+          <h3>You notice beauty in soft things.</h3>
+          <p>Like lilies… not flashy, but elegant and meaningful.</p>
+        </div>
+      </div>
+
+      <div class="know-card reveal">
+        <img src="{{ url_for('static', filename='images/mansi6.jpg') }}" alt="Mansi" loading="lazy" class="know-image">
+        <div class="card-content know-copy">
+          <h3>Your music taste says a lot about you.</h3>
+          <p>Arijit Singh… which means you understand emotions more deeply than you show.</p>
+        </div>
+      </div>
+
+      <div class="know-card reveal">
+        <img src="{{ url_for('static', filename='images/mansi7.jpg') }}" alt="Mansi" loading="lazy" class="know-image">
+        <div class="card-content know-copy">
+          <h3>And then there’s your comfort world…</h3>
+          <p>Music, books, and those long naps—you know how to slow down in a fast world.</p>
+        </div>
+      </div>
+    </div>
+
+    <section class="know-choice-section">
+      <h3>What is something about you that I don’t know yet?</h3>
+      <div class="option-grid">
+        <label class="option-card checkbox-card" for="k1"><input id="k1" type="checkbox" name="know_you[]" value="Your hidden fears"><span>Your hidden fears</span></label>
+        <label class="option-card checkbox-card" for="k2"><input id="k2" type="checkbox" name="know_you[]" value="Things that make you overthink"><span>Things that make you overthink</span></label>
+        <label class="option-card checkbox-card" for="k3"><input id="k3" type="checkbox" name="know_you[]" value="Your favorite comfort things"><span>Your favorite comfort things</span></label>
+        <label class="option-card checkbox-card" for="k4"><input id="k4" type="checkbox" name="know_you[]" value="Something you’ve never told me"><span>Something you’ve never told me</span></label>
+        <label class="option-card checkbox-card" for="k5"><input id="k5" type="checkbox" name="know_you[]" value="What truly makes you happy"><span>What truly makes you happy</span></label>
+      </div>
+    </section>
+
+    <div class="btn-row single-row">
+      <button type="submit" class="primary-btn">Continue</button>
+    </div>
+  </form>
+</main>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
