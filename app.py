@@ -113,6 +113,7 @@ def submit():
         flash("Sorry, something went wrong while sending your proposal. Please try again.", "error")
         return redirect(url_for("questions"))
 
+    print("Redirecting to final page")
     return redirect(url_for("final"))
 
 
