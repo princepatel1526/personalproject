@@ -69,6 +69,8 @@ def questions():
 
 @app.route("/submit", methods=["POST"])
 def submit():
+    print("Form submitted successfully")
+    print("Final response:", request.form.get("final_response"))
     recipient_email = os.getenv("RECIPIENT_EMAIL", "").strip()
     if not recipient_email:
         flash("Server configuration error: recipient email is not configured.", "error")
