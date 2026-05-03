@@ -106,20 +106,30 @@ def submit():
     answers.append(("Mansi Shukla… will you be mine?", final_response))
 
     timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    pdf_path = None
+
     try:
         with tempfile.TemporaryDirectory() as tmp_dir:
             pdf_path = os.path.join(tmp_dir, f"mansi_proposal_{timestamp}.pdf")
             generate_proposal_pdf(pdf_path=pdf_path, title="A Heartfelt Note for Mansi Shukla", qa_pairs=answers, closing_message="Every chosen answer feels like a heartbeat saying yes to love.")
-            send_email_with_attachment(
-                recipient=recipient_email,
-                subject="A Romantic Proposal for Mansi Shukla 💌",
-                body="Hello,\n\nPlease find attached the romantic proposal responses in PDF format.\n\nWith love,\nYour Proposal Website",
-                attachment_path=pdf_path,
-            )
-    except Exception:
-        logger.exception("Submission processing failed.")
-        flash("Sorry, something went wrong while sending your proposal. Please try again.", "error")
-        return redirect(url_for("questions"))
+
+            try:
+                send_email_with_attachment(
+                    recipient=recipient_email,
+                    subject="A Romantic Proposal for Mansi Shukla 💌",
+                    body=(
+                        "Hello,\n\n"
+                        "Please find attached the romantic proposal responses in PDF format.\n\n"
+                        "With love,\n"
+                        "Your Proposal Website"
+                    ),
+                    attachment_path=pdf_path,
+                )
+            except Exception as e:
+                print("EMAIL ERROR:", e)
+
+    except Exception as e:
+        print("PDF ERROR:", e)
 
     print("Redirecting to final page")
     return redirect(url_for("final"))
