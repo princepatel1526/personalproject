@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How Well I Know You</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+</head>
+<body>
+<main class="questions-wrapper">
+  <form class="form-card know-form" method="POST" action="{{ url_for('know_you') }}">
+    <h2>How well do I know you?</h2>
+    <p class="progress-text">A small pause before our journey continues.</p>
+    <div class="know-grid">
+      {% for statement in statements %}
+      <article class="know-card reveal">{{ statement }}</article>
+      {% endfor %}
+    </div>
+
+    <section class="know-choice-section">
+      <h3>What is something about you that I don’t know yet?</h3>
+      <div class="option-grid">
+        {% for option in options %}
+        <label class="option-card checkbox-card" for="k{{ loop.index }}">
+          <input id="k{{ loop.index }}" type="checkbox" name="know_you[]" value="{{ option }}">
+          <span>{{ option }}</span>
+        </label>
+        {% endfor %}
+      </div>
+    </section>
+
+    <div class="btn-row single-row">
+      <button type="submit" class="primary-btn">Continue</button>
+    </div>
+  </form>
+</main>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

@@ -17,20 +17,13 @@
       <div class="card-content">
         <h1>Dear Mansi Shukla</h1>
         <p>Some feelings are too beautiful to stay unspoken. This little corner holds words from my heart.</p>
-        <a href="{{ url_for('questions') }}" class="enter-btn">Enter</a>
-        <button id="toggleHearts" class="secondary-btn heart-toggle" type="button">Hearts: On</button>
+        <p class="pre-note">Before we begin, I want you to see something…</p>
+        <a href="{{ url_for('know_you') }}" class="secondary-btn journey-btn">How well do I know you?</a>
+        <div class="entry-row">
+          <a href="{{ url_for('questions') }}" class="enter-btn">Enter</a>
+          <button id="toggleHearts" class="secondary-btn heart-toggle" type="button">Hearts: On</button>
+        </div>
       </div>
-    </section>
-
-    <section class="know-section">
-      <h2>How well do I know you?</h2>
-      <div class="know-grid">
-        <article class="know-card reveal">You pretend to be strong, but your heart always protects people you love.</article>
-        <article class="know-card reveal">You remember tiny details and call them nothing, but they mean everything.</article>
-        <article class="know-card reveal">Your smile changes when you're truly happy — softer, brighter, unforgettable.</article>
-        <article class="know-card reveal">Even in silence, you speak kindness with your eyes.</article>
-      </div>
-      <img src="{{ url_for('static', filename='images/rose-glow.svg') }}" alt="soft rose glow" class="section-accent" loading="lazy" />
     </section>
   </main>
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>

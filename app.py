@@ -4,7 +4,7 @@ import tempfile
 from datetime import datetime
 
 from dotenv import load_dotenv
-from flask import Flask, flash, redirect, render_template, request, url_for
+from flask import Flask, flash, redirect, render_template, request, session, url_for
 
 from utils.email_sender import send_email_with_attachment
 from utils.pdf_generator import generate_proposal_pdf
@@ -19,6 +19,22 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "change-me-in-production")
+
+KNOW_YOU_STATEMENTS = [
+    "You pretend to be strong, but your heart always protects people you love.",
+    "You remember tiny details and call them nothing, but they mean everything.",
+    "Your smile changes when you're truly happy — softer, brighter, unforgettable.",
+    "Even in silence, you speak kindness with your eyes.",
+    "You carry storms quietly, yet still choose gentleness.",
+]
+
+KNOW_YOU_OPTIONS = [
+    "Your hidden fears",
+    "Things that make you overthink",
+    "Your favorite comfort things",
+    "Something you’ve never told me",
+    "What truly makes you happy",
+]
 
 QUESTION_BANK = [
     {"id": "q1", "text": "How do you feel when we talk?", "options": [
@@ -44,6 +60,17 @@ def landing():
     return render_template("index.html")
 
 
+@app.route("/know-you", methods=["GET", "POST"])
+def know_you():
+    if request.method == "POST":
+        selected = request.form.getlist("know_you[]")
+        valid_selected = [item for item in selected if item in KNOW_YOU_OPTIONS]
+        session["know_you_choices"] = valid_selected
+        return redirect(url_for("questions"))
+
+    return render_template("know_you.html", statements=KNOW_YOU_STATEMENTS, options=KNOW_YOU_OPTIONS)
+
+
 @app.route("/questions")
 def questions():
     return render_template("questions.html", questions=QUESTION_BANK)
@@ -58,6 +85,10 @@ def submit():
         return redirect(url_for("questions"))
 
     answers = []
+    know_you_choices = session.get("know_you_choices", [])
+    if know_you_choices:
+        answers.append(("What is something about you that I don’t know yet?", ", ".join(know_you_choices)))
+
     for item in QUESTION_BANK:
         answer = request.form.get(item["id"], "").strip()
         valid_options = [option["text"] for option in item["options"]]

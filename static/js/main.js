@@ -1,7 +1,15 @@
+function initRevealCards() {
+  const cards = document.querySelectorAll('.reveal');
+  if (!cards.length) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => entry.target.classList.toggle('show', entry.isIntersecting));
+  }, { threshold: 0.15 });
+  cards.forEach((el) => observer.observe(el));
+}
+
 function initQuestionsFlow() {
   const form = document.getElementById('proposalForm');
   if (!form) return;
-
   const steps = Array.from(document.querySelectorAll('.form-step'));
   const prevBtn = document.getElementById('prevBtn');
   const nextBtn = document.getElementById('nextBtn');
@@ -10,7 +18,6 @@ function initQuestionsFlow() {
   const progressText = document.getElementById('progressText');
   const emojiBurst = document.getElementById('emojiBurst');
   let currentStep = 0;
-
   const map = { positive: ['❤️', '😊', '✨'], neutral: ['🙂', '🤔'], negative: ['😅', '😶'] };
 
   const showEmojis = (tone = 'neutral') => {
@@ -38,10 +45,7 @@ function initQuestionsFlow() {
   function validateCurrentStep() {
     const checked = steps[currentStep].querySelector('input[type="radio"]:checked');
     const error = steps[currentStep].querySelector('.error');
-    if (!checked) {
-      error.classList.add('show');
-      return false;
-    }
+    if (!checked) { error.classList.add('show'); return false; }
     error.classList.remove('show');
     return true;
   }
@@ -49,11 +53,9 @@ function initQuestionsFlow() {
   form.querySelectorAll('input[type="radio"]').forEach((input) => {
     input.addEventListener('change', () => showEmojis(input.dataset.tone));
   });
-
   nextBtn.addEventListener('click', () => { if (validateCurrentStep()) { currentStep += 1; renderStep(); } });
   prevBtn.addEventListener('click', () => { currentStep -= 1; renderStep(); });
   form.addEventListener('submit', (event) => { if (!validateCurrentStep()) event.preventDefault(); });
-
   renderStep();
 }
 
@@ -89,13 +91,9 @@ function initLandingFX() {
     sync();
   });
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => entry.target.classList.toggle('show', entry.isIntersecting));
-  }, { threshold: 0.18 });
-  document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-
   sync();
 }
 
+initRevealCards();
 initQuestionsFlow();
 initLandingFX();
