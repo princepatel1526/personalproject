@@ -8,6 +8,9 @@ from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
 
 
 def generate_proposal_pdf(pdf_path: str, title: str, qa_pairs: list[tuple[str, str]], closing_message: str) -> None:
+    if not qa_pairs:
+        raise ValueError("Cannot generate PDF: no question/answer data provided.")
+
     doc = SimpleDocTemplate(
         pdf_path,
         pagesize=A4,
@@ -40,16 +43,12 @@ def generate_proposal_pdf(pdf_path: str, title: str, qa_pairs: list[tuple[str, s
         leading=17,
     )
 
-    story = []
-    story.append(Paragraph(title, title_style))
-    story.append(Spacer(1, 0.3 * cm))
-    story.append(
-        Paragraph(
-            f"Created on {datetime.now().strftime('%B %d, %Y at %H:%M')}",
-            styles["Italic"],
-        )
-    )
-    story.append(Spacer(1, 0.6 * cm))
+    story = [
+        Paragraph(title, title_style),
+        Spacer(1, 0.3 * cm),
+        Paragraph(f"Created on {datetime.now().strftime('%B %d, %Y at %H:%M')}", styles["Italic"]),
+        Spacer(1, 0.6 * cm),
+    ]
 
     for index, (question, answer) in enumerate(qa_pairs, start=1):
         story.append(Paragraph(f"{index}. {question}", question_style))

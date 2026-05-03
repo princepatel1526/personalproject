@@ -51,10 +51,9 @@ A responsive romantic proposal website dedicated to **Mansi Shukla**, built from
 4. **Configure SMTP credentials in `.env`**
    - `SMTP_SERVER`: SMTP host (e.g., `smtp.gmail.com`)
    - `SMTP_PORT`: Usually `587`
-   - `SMTP_USERNAME`: SMTP login username
+   - `SMTP_USERNAME`: SMTP login username (**also used as sender email**)
    - `SMTP_PASSWORD`: SMTP password/app password
-   - `SENDER_EMAIL`: Email address used as sender
-   - `RECIPIENT_EMAIL`: Address receiving the proposal PDF
+     - `RECIPIENT_EMAIL`: Address receiving the proposal PDF
 
    > For Gmail, use an **App Password** if 2FA is enabled.
 
