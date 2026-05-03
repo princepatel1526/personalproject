@@ -20,13 +20,32 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "change-me-in-production")
 
-QUESTIONS = [
-    "What was the first moment you felt we shared something special?",
-    "What do you love most about spending time with me?",
-    "Which memory of us makes your heart smile the most?",
-    "What dream would you love for us to build together?",
-    "When life gets tough, how can we remind each other of our love?",
-    "What does forever with me feel like to you?",
+QUESTION_BANK = [
+    {
+        "id": "q1",
+        "text": "How do you feel when we talk?",
+        "options": ["Happy and calm", "Excited and nervous", "Safe and understood", "Like time stops"],
+    },
+    {
+        "id": "q2",
+        "text": "Which moment with me feels most magical?",
+        "options": ["Late-night conversations", "Our laughter together", "Silent eye contact", "Simple walks together"],
+    },
+    {
+        "id": "q3",
+        "text": "What do you treasure most about us?",
+        "options": ["Our emotional comfort", "Our playful bond", "Our deep trust", "Our shared dreams"],
+    },
+    {
+        "id": "q4",
+        "text": "If love had a color for us, it would be...",
+        "options": ["Soft pink like tenderness", "Golden like warm sunsets", "Blue like peaceful skies", "Crimson like passion"],
+    },
+    {
+        "id": "q5",
+        "text": "What do you hope for our future?",
+        "options": ["A home full of laughter", "A life of adventure", "A forever friendship and love", "Growing old hand in hand"],
+    },
 ]
 
 
@@ -37,7 +56,7 @@ def landing():
 
 @app.route("/questions")
 def questions():
-    return render_template("questions.html", questions=QUESTIONS)
+    return render_template("questions.html", questions=QUESTION_BANK, total_questions=len(QUESTION_BANK))
 
 
 @app.route("/submit", methods=["POST"])
@@ -49,13 +68,13 @@ def submit():
         return redirect(url_for("questions"))
 
     answers = []
-    for i, question in enumerate(QUESTIONS, start=1):
-        answer = request.form.get(f"q{i}", "").strip()
-        if not answer:
-            logger.warning("Validation failed: missing answer for question %s", i)
-            flash("Please answer all questions before submitting.", "error")
+    for item in QUESTION_BANK:
+        answer = request.form.get(item["id"], "").strip()
+        if answer not in item["options"]:
+            logger.warning("Validation failed for %s. Received invalid answer: %s", item["id"], answer)
+            flash("Please select one option for each question.", "error")
             return redirect(url_for("questions"))
-        answers.append((question, answer))
+        answers.append((item["text"], answer))
 
     timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
 
@@ -67,23 +86,14 @@ def submit():
                 pdf_path=pdf_path,
                 title="A Heartfelt Note for Mansi Shukla",
                 qa_pairs=answers,
-                closing_message=(
-                    "Every answer tells one story: love that is gentle, honest, and eternal. "
-                    "Mansi, may this be the beginning of our forever."
-                ),
+                closing_message="Every chosen answer feels like a heartbeat saying yes to love.",
             )
             logger.info("PDF generated successfully at %s", pdf_path)
 
             send_email_with_attachment(
                 recipient=recipient_email,
                 subject="A Romantic Proposal for Mansi Shukla 💌",
-                body=(
-                    "Hello,\n\n"
-                    "Please find attached the romantic proposal responses in PDF format.\n"
-                    "This message was sent from the Flask Romantic Proposal App.\n\n"
-                    "With love,\n"
-                    "Your Proposal Website"
-                ),
+                body="Hello,\n\nPlease find attached the romantic proposal responses in PDF format.\n\nWith love,\nYour Proposal Website",
                 attachment_path=pdf_path,
             )
             logger.info("Proposal email sent successfully to %s", recipient_email)

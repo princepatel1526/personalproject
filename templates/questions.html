@@ -11,12 +11,10 @@
 </head>
 <body>
   <main class="questions-wrapper">
-    <div class="progress-wrap">
-      <div id="progressBar" class="progress-bar"></div>
-    </div>
-
     <form id="proposalForm" class="form-card" method="POST" action="{{ url_for('submit') }}" novalidate>
       <h2>Before the final question...</h2>
+      <p id="progressText" class="progress-text"></p>
+      <div class="progress-wrap"><div id="progressBar" class="progress-bar"></div></div>
 
       {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
@@ -30,9 +28,16 @@
 
       {% for question in questions %}
       <section class="form-step {% if loop.first %}active{% endif %}">
-        <label for="q{{ loop.index }}">{{ loop.index }}. {{ question }}</label>
-        <textarea id="q{{ loop.index }}" name="q{{ loop.index }}" rows="5" required minlength="3" placeholder="Write from your heart..."></textarea>
-        <small class="error">Please add a meaningful response.</small>
+        <h3>{{ loop.index }}. {{ question.text }}</h3>
+        <div class="option-grid">
+          {% for option in question.options %}
+          <label class="option-card" for="{{ question.id }}_{{ loop.index }}">
+            <input id="{{ question.id }}_{{ loop.index }}" type="radio" name="{{ question.id }}" value="{{ option }}" required>
+            <span>{{ option }}</span>
+          </label>
+          {% endfor %}
+        </div>
+        <small class="error">Please choose one option to continue.</small>
       </section>
       {% endfor %}
 

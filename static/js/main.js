@@ -3,6 +3,7 @@ const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const submitBtn = document.getElementById('submitBtn');
 const progressBar = document.getElementById('progressBar');
+const progressText = document.getElementById('progressText');
 
 let currentStep = 0;
 
@@ -13,14 +14,14 @@ function renderStep() {
   nextBtn.classList.toggle('hidden', isLastStep);
   submitBtn.classList.toggle('hidden', !isLastStep);
   progressBar.style.width = `${((currentStep + 1) / steps.length) * 100}%`;
+  progressText.textContent = `Question ${currentStep + 1} of ${steps.length}`;
 }
 
 function validateCurrentStep() {
-  const textarea = steps[currentStep].querySelector('textarea');
+  const checked = steps[currentStep].querySelector('input[type="radio"]:checked');
   const error = steps[currentStep].querySelector('.error');
-  if (textarea.value.trim().length < 3) {
+  if (!checked) {
     error.classList.add('show');
-    textarea.focus();
     return false;
   }
   error.classList.remove('show');
@@ -36,6 +37,13 @@ nextBtn.addEventListener('click', () => {
 prevBtn.addEventListener('click', () => {
   currentStep -= 1;
   renderStep();
+});
+
+document.querySelectorAll('.option-card').forEach((card) => {
+  card.addEventListener('click', () => {
+    const error = card.closest('.form-step').querySelector('.error');
+    error.classList.remove('show');
+  });
 });
 
 document.getElementById('proposalForm').addEventListener('submit', (event) => {
