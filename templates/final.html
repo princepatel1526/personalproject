@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank You</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+</head>
+<body>
+  <main class="final-wrapper">
+    <section class="final-card">
+      <p class="final-line">Whatever your answer is…<br>I just want you to know something.</p>
+      <p class="final-line">You’ve become a part of my thoughts in ways I never expected.</p>
+      <p class="final-line">Some conversations fade… but ours stayed.</p>
+      <p class="final-line">You made ordinary moments feel different… lighter… better.</p>
+      <p class="final-line">And for that… I’m genuinely thankful.</p>
+
+      <p class="final-line">I don’t know what the future holds…<br>but I do know this—</p>
+      <p class="final-line">I’m really glad I met you.</p>
+      <p class="final-line">And I’m even more glad that you stayed.</p>
+
+      <p class="final-highlight final-line">Thank you… for being in my life ❤️</p>
+      <p class="final-note final-line">No matter what you chose… this meant something to me.</p>
+
+      <a class="enter-btn final-back" href="{{ url_for('landing') }}">Go back to start</a>
+    </section>
+  </main>
+
+  <script>
+    const lines = document.querySelectorAll('.final-line');
+    lines.forEach((line, idx) => {
+      setTimeout(() => line.classList.add('show'), 450 * (idx + 1));
+    });
+  </script>
+</body>
+</html>
