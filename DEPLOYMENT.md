@@ -54,3 +54,17 @@ Also add these if used in your SMTP setup:
 1. Open the deployed link on your phone.
 2. Complete `/know-you` and `/questions` flow.
 3. Submit and verify the email is received with attached PDF.
+
+
+## Deployment Troubleshooting
+
+1. **Check Render logs**
+   - Open your service in Render and inspect runtime logs during `/submit`.
+2. **Verify POST /submit**
+   - Use browser DevTools Network tab and confirm POST status + redirect target.
+3. **Test static files manually**
+   - Open `/static/js/main.js` and `/static/css/styles.css` directly from deployed URL.
+4. **Verify environment variables**
+   - Ensure all required keys are set exactly and without extra whitespace.
+5. **Production vs local differences**
+   - In production, HTTPS/proxy/env config can expose validation or provider issues not seen locally.

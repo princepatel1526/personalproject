@@ -120,3 +120,11 @@ Add your own images to `static/images/` with these filenames before running the 
    - Animations only apply if elements are visible
    - Ensure CSS classes are applied correctly
    - Check console for errors
+
+
+## Common Issues & Fixes
+
+- **Form not submitting** → Check that `static/js/main.js` is loading in the page and browser console has no JS errors.
+- **500 error on /submit** → Check application logs for `PDF ERROR` and `EMAIL ERROR` tracebacks.
+- **Email not sending** → Verify email provider env variables are correct in deployment settings.
+- **Static files not loading** → Confirm lowercase folder names (`static/js`, `static/css`) and correct `url_for('static', ...)` paths.

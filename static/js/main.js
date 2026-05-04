@@ -92,6 +92,7 @@ function initQuestionsFlow() {
         showEmojis('positive');
       }
 
+      this.disabled = true;
       document.getElementById('proposalForm').requestSubmit();
     });
   });
@@ -124,11 +125,6 @@ function initLandingFX() {
   toggle.addEventListener('click', () => { enabled = !enabled; localStorage.setItem('hearts-enabled', enabled ? 'on' : 'off'); sync(); });
   sync();
 }
-
-initRevealCards();
-initQuestionsFlow();
-initLandingFX();
-
 
 function initKnowYouFlip() {
   const cards = window.knowYouCards;
@@ -174,4 +170,11 @@ function initKnowYouFlip() {
   renderCard(idx);
 }
 
-initKnowYouFlip();
+
+
+document.addEventListener("DOMContentLoaded", function () {
+  initRevealCards();
+  initQuestionsFlow();
+  initLandingFX();
+  initKnowYouFlip();
+});

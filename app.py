@@ -1,6 +1,7 @@
 import logging
 import os
 import tempfile
+import traceback
 from datetime import datetime
 
 from dotenv import load_dotenv
@@ -107,12 +108,14 @@ def submit():
 
     timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
     pdf_path = None
+    print("Starting PDF generation step")
 
     try:
         with tempfile.TemporaryDirectory() as tmp_dir:
             pdf_path = os.path.join(tmp_dir, f"mansi_proposal_{timestamp}.pdf")
             generate_proposal_pdf(pdf_path=pdf_path, title="A Heartfelt Note for Mansi Shukla", qa_pairs=answers, closing_message="Every chosen answer feels like a heartbeat saying yes to love.")
 
+            print("Starting email send step")
             try:
                 send_email_with_attachment(
                     recipient=recipient_email,
@@ -127,9 +130,11 @@ def submit():
                 )
             except Exception as e:
                 print("EMAIL ERROR:", e)
+                traceback.print_exc()
 
     except Exception as e:
         print("PDF ERROR:", e)
+        traceback.print_exc()
 
     print("Redirecting to final page")
     return redirect(url_for("final"))
