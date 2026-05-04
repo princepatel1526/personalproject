@@ -138,3 +138,6 @@ Add your own images to `static/images/` with these filenames before running the 
 2. Copy the entire JSON content.
 3. Add it in Render environment variable: `GOOGLE_CREDS_JSON`.
 4. Deploy (or redeploy) the app.
+
+
+- Google Sheet must include a 'Timestamp' column as the last column.

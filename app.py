@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import traceback
+from datetime import datetime, timezone
 
 import gspread
 from dotenv import load_dotenv
@@ -72,6 +73,7 @@ def save_to_google_sheets(data: dict) -> None:
         data.get("q2", ""),
         data.get("like_score", ""),
         data.get("final_response", ""),
+        datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"),
     ]
     sheet.append_row(row)
 
