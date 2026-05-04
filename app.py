@@ -1,14 +1,11 @@
 import logging
 import os
-import tempfile
 import traceback
-from datetime import datetime
 
+import gspread
 from dotenv import load_dotenv
 from flask import Flask, flash, redirect, render_template, request, session, url_for
-
-from utils.email_sender import send_email_with_attachment
-from utils.pdf_generator import generate_proposal_pdf
+from oauth2client.service_account import ServiceAccountCredentials
 
 load_dotenv()
 
@@ -49,7 +46,23 @@ QUESTION_BANK = [
         {"text": "No, I don’t think so", "tone": "negative"},
     ]},
 ]
-FINAL_OPTIONS = ["Yes ❤️", "No 😅", "I’ll tell you when you come to Mumbai 😉"]
+
+
+def save_to_google_sheets(data: dict) -> None:
+    scope = [
+        "https://spreadsheets.google.com/feeds",
+        "https://www.googleapis.com/auth/drive",
+    ]
+    creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+    client = gspread.authorize(creds)
+    sheet = client.open("Proposal Responses").sheet1
+    row = [
+        data.get("q1", ""),
+        data.get("q2", ""),
+        data.get("like_score", ""),
+        data.get("final_response", ""),
+    ]
+    sheet.append_row(row)
 
 
 @app.route("/")
@@ -77,74 +90,38 @@ def submit():
     print("Form submitted successfully")
     print("Final response:", request.form.get("final_response"))
     print("FORM DATA:", request.form)
-    recipient_email = os.getenv("RECIPIENT_EMAIL", "").strip()
-    if not recipient_email:
-        flash("Server configuration error: recipient email is not configured.", "error")
-        return redirect(url_for("questions"))
-
-    answers = []
-    know_you_choices = session.get("know_you_choices", [])
-    if know_you_choices:
-        answers.append(("What is something about you that I don’t know yet?", ", ".join(know_you_choices)))
 
     for item in QUESTION_BANK:
         answer = request.form.get(item["id"], "").strip()
         if not answer:
             flash("Please complete all steps before submitting.", "error")
             return redirect(url_for("questions"))
-        answers.append((item["text"], answer))
 
     like_score = request.form.get("like_score", "").strip()
     if not like_score.isdigit() or not (0 <= int(like_score) <= 100):
         flash("Please set the like score before submitting.", "error")
         return redirect(url_for("questions"))
-    answers.append(("How much do you like me?", f"{like_score}%"))
 
     final_response = request.form.get("final_response", "").strip()
     if not final_response:
         flash("Please choose a final response.", "error")
         return redirect(url_for("questions"))
-    answers.append(("Mansi Shukla… will you be mine?", final_response))
 
-    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
-    pdf_path = None
-    print("Starting PDF generation step")
-
+    form_data = dict(request.form)
     try:
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            pdf_path = os.path.join(tmp_dir, f"mansi_proposal_{timestamp}.pdf")
-            generate_proposal_pdf(pdf_path=pdf_path, title="A Heartfelt Note for Mansi Shukla", qa_pairs=answers, closing_message="Every chosen answer feels like a heartbeat saying yes to love.")
-
-            print("Starting email send step")
-            try:
-                send_email_with_attachment(
-                    recipient=recipient_email,
-                    subject="A Romantic Proposal for Mansi Shukla 💌",
-                    body=(
-                        "Hello,\n\n"
-                        "Please find attached the romantic proposal responses in PDF format.\n\n"
-                        "With love,\n"
-                        "Your Proposal Website"
-                    ),
-                    attachment_path=pdf_path,
-                )
-            except Exception as e:
-                print("EMAIL ERROR:", e)
-                traceback.print_exc()
-
+        save_to_google_sheets(form_data)
     except Exception as e:
-        print("PDF ERROR:", e)
+        print("SHEET ERROR:", e)
         traceback.print_exc()
 
     print("Redirecting to final page")
     return redirect(url_for("final"))
 
 
-
-
 @app.route("/final")
 def final():
     return render_template("final.html")
+
 
 @app.route("/success")
 def success():

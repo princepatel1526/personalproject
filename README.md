@@ -6,8 +6,7 @@ A responsive romantic proposal website dedicated to **Mansi Shukla**, built from
 - Romantic landing page with card layout and animations
 - Multi-step romantic questionnaire with client-side validation
 - Flask backend submission handler
-- Structured PDF generation with all questions and answers
-- Real SMTP email delivery with PDF attachment
+- Google Sheets storage of all questionnaire responses
 - Final proposal page with typewriter effect and optional music toggle
 
 ## Project Structure
@@ -48,14 +47,9 @@ A responsive romantic proposal website dedicated to **Mansi Shukla**, built from
    cp .env.example .env
    ```
 
-4. **Configure SMTP credentials in `.env`**
-   - `SMTP_SERVER`: SMTP host (e.g., `smtp.gmail.com`)
-   - `SMTP_PORT`: Usually `587`
-   - `SMTP_USERNAME`: SMTP login username (**also used as sender email**)
-   - `SMTP_PASSWORD`: SMTP password/app password
-     - `RECIPIENT_EMAIL`: Address receiving the proposal PDF
-
-   > For Gmail, use an **App Password** if 2FA is enabled.
+4. **Add Google service account credentials**
+   - Place `credentials.json` in project root
+   - Share sheet `Proposal Responses` with service account email
 
 5. **Run the app**
    ```bash
@@ -69,10 +63,8 @@ A responsive romantic proposal website dedicated to **Mansi Shukla**, built from
 1. Open landing page (`/`)
 2. Click **Enter**
 3. Fill all romantic questions (`/questions`)
-4. Submit to trigger:
-   - PDF generation
-   - SMTP email with PDF attachment
-5. Redirect to final proposal page (`/success`)
+4. Submit to store responses in Google Sheets
+5. Redirect to final proposal page (`/final`)
 
 
 
@@ -126,5 +118,15 @@ Add your own images to `static/images/` with these filenames before running the 
 
 - **Form not submitting** → Check that `static/js/main.js` is loading in the page and browser console has no JS errors.
 - **500 error on /submit** → Check application logs for `PDF ERROR` and `EMAIL ERROR` tracebacks.
-- **Email not sending** → Verify email provider env variables are correct in deployment settings.
+- **Sheet write failing** → Verify `credentials.json`, sheet sharing permissions, and Google API enablement.
 - **Static files not loading** → Confirm lowercase folder names (`static/js`, `static/css`) and correct `url_for('static', ...)` paths.
+
+
+## Google Sheets Integration
+
+1. Create a Google Sheet named **Proposal Responses**.
+2. Enable Google Sheets API in your Google Cloud project.
+3. Create a Service Account.
+4. Download `credentials.json`.
+5. Share the sheet with the service account email.
+6. Place `credentials.json` in the project root.

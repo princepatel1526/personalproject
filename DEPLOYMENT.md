@@ -32,21 +32,15 @@ Use these settings in Render:
 In Render service settings, add:
 
 - `FLASK_SECRET_KEY`
-- `SMTP_USERNAME`
-- `SMTP_PASSWORD`
-- `RECIPIENT_EMAIL`
-
-Also add these if used in your SMTP setup:
-- `SMTP_SERVER`
-- `SMTP_PORT`
 
 ## 5) Common issues
 - **Images not loading**
   - Ensure files are in `/static/images/`
   - Verify exact filename and case
-- **Email not working**
-  - Use valid SMTP credentials
-  - For Gmail, use an app password
+- **Google Sheets not writing**
+  - Ensure `credentials.json` is present and readable
+  - Ensure target sheet is shared with service account email
+  - Ensure Google Sheets API is enabled
 - **Case sensitivity on deployment**
   - `mansi1.jpg` and `Mansi1.jpg` are different on Linux
 
@@ -68,3 +62,10 @@ Also add these if used in your SMTP setup:
    - Ensure all required keys are set exactly and without extra whitespace.
 5. **Production vs local differences**
    - In production, HTTPS/proxy/env config can expose validation or provider issues not seen locally.
+
+
+## Render Setup for Google Sheets
+
+- Upload `credentials.json` OR provide equivalent secure file handling in your environment.
+- Ensure credentials file is accessible in production runtime.
+- Verify Google Sheets API access before testing submissions.
