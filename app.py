@@ -25,6 +25,9 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY")
 if not app.secret_key:
     raise RuntimeError("FLASK_SECRET_KEY environment variable is not set.")
 
+if not os.getenv("GOOGLE_CREDS_JSON"):
+    raise RuntimeError("GOOGLE_CREDS_JSON environment variable is not set.")
+
 KNOW_YOU_OPTIONS = [
     "Your hidden fears",
     "Things that make you overthink",
@@ -60,7 +63,10 @@ def save_to_google_sheets(data: dict) -> None:
     creds_dict = json.loads(creds_json)
     creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
     client = gspread.authorize(creds)
-    sheet = client.open("Proposal Responses").sheet1
+    spreadsheet_id = os.getenv("GOOGLE_SHEET_ID", "").strip()
+    if not spreadsheet_id:
+        raise Exception("Missing GOOGLE_SHEET_ID environment variable")
+    sheet = client.open_by_key(spreadsheet_id).sheet1
     row = [
         data.get("q1", ""),
         data.get("q2", ""),
@@ -116,8 +122,9 @@ def submit():
     try:
         save_to_google_sheets(form_data)
     except Exception as e:
-        print("SHEET ERROR:", e)
-        traceback.print_exc()
+        logger.error("SHEET ERROR: %s", e, exc_info=True)
+        flash("Could not save response. Please try again.", "error")
+        return redirect(url_for("questions"))
 
     print("Redirecting to final page")
     return redirect(url_for("final"))
