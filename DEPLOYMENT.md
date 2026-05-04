@@ -69,3 +69,11 @@ In Render service settings, add:
 - Upload `credentials.json` OR provide equivalent secure file handling in your environment.
 - Ensure credentials file is accessible in production runtime.
 - Verify Google Sheets API access before testing submissions.
+
+
+## Google Sheets on Render
+
+- `credentials.json` will **not** be available in production filesystem.
+- Use environment variable `GOOGLE_CREDS_JSON` instead.
+- Ensure the JSON is pasted correctly as a single valid JSON value.
+- Restart the service after adding/updating the variable.

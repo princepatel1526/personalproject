@@ -130,3 +130,11 @@ Add your own images to `static/images/` with these filenames before running the 
 4. Download `credentials.json`.
 5. Share the sheet with the service account email.
 6. Place `credentials.json` in the project root.
+
+
+## Google Sheets (Production Setup)
+
+1. Open `credentials.json`.
+2. Copy the entire JSON content.
+3. Add it in Render environment variable: `GOOGLE_CREDS_JSON`.
+4. Deploy (or redeploy) the app.

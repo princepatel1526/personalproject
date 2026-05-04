@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import traceback
@@ -53,7 +54,11 @@ def save_to_google_sheets(data: dict) -> None:
         "https://spreadsheets.google.com/feeds",
         "https://www.googleapis.com/auth/drive",
     ]
-    creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+    creds_json = os.getenv("GOOGLE_CREDS_JSON")
+    if not creds_json:
+        raise Exception("Missing GOOGLE_CREDS_JSON environment variable")
+    creds_dict = json.loads(creds_json)
+    creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
     client = gspread.authorize(creds)
     sheet = client.open("Proposal Responses").sheet1
     row = [
