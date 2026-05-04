@@ -11,7 +11,7 @@ def send_email_with_attachment(recipient: str, subject: str, body: str, attachme
     smtp_server = os.getenv("SMTP_SERVER", "").strip()
     smtp_port = int(os.getenv("SMTP_PORT", "587"))
     smtp_username = os.getenv("SMTP_USERNAME", "").strip()
-    smtp_password = os.getenv("SMTP_PASSWORD", "")
+    smtp_password = os.getenv("SMTP_PASSWORD", "").strip()
 
     sender_email = smtp_username
 

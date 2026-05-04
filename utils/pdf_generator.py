@@ -1,10 +1,16 @@
 from datetime import datetime
+import re
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import cm
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer
+
+
+def _safe_text(text: str) -> str:
+    """Remove characters that ReportLab's built-in fonts cannot render."""
+    return re.sub(r'[^\x00-\xFF]', '', text)
 
 
 def generate_proposal_pdf(pdf_path: str, title: str, qa_pairs: list[tuple[str, str]], closing_message: str) -> None:
@@ -44,21 +50,21 @@ def generate_proposal_pdf(pdf_path: str, title: str, qa_pairs: list[tuple[str, s
     )
 
     story = [
-        Paragraph(title, title_style),
+        Paragraph(_safe_text(title), title_style),
         Spacer(1, 0.3 * cm),
         Paragraph(f"Created on {datetime.now().strftime('%B %d, %Y at %H:%M')}", styles["Italic"]),
         Spacer(1, 0.6 * cm),
     ]
 
     for index, (question, answer) in enumerate(qa_pairs, start=1):
-        story.append(Paragraph(f"{index}. {question}", question_style))
+        story.append(Paragraph(f"{index}. {_safe_text(question)}", question_style))
         story.append(Spacer(1, 0.15 * cm))
-        story.append(Paragraph(answer, answer_style))
+        story.append(Paragraph(_safe_text(answer), answer_style))
         story.append(Spacer(1, 0.45 * cm))
 
     story.append(Spacer(1, 0.3 * cm))
     story.append(Paragraph("Closing Note", question_style))
     story.append(Spacer(1, 0.15 * cm))
-    story.append(Paragraph(closing_message, answer_style))
+    story.append(Paragraph(_safe_text(closing_message), answer_style))
 
     doc.build(story)
